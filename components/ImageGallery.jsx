@@ -7,54 +7,11 @@ import { toast } from "react-toastify";
 import { RotatingLines } from "react-loader-spinner";
 import { useSession } from "next-auth/react";
 
-const accessKey = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
-
-const ImageGallery = () => {
-const { data: session, status } = useSession();
+const ImageGallery = ({items, setItems, imageLoading}) => {
 const mouseSensor = useSensor(MouseSensor);
 const touchSensor = useSensor(TouchSensor);
 const keyboardSensor = useSensor(KeyboardSensor);
 const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
-  const [items, setItems] = useState([]);
-  const [imageLoading, setImageLoading] = useState([]);
-  const searchTerm = "Interior design";
-  const fetchImages = async () => {
-    setImageLoading(true);
-    try {
-        const response = await axios.get("https://api.unsplash.com/search/photos", {
-      params: {
-        query: searchTerm,
-        per_page: 25,
-      },
-      headers: {
-        Authorization: `Client-ID ${accessKey}`,
-      },
-    });
-    if(!response.error){
-    const {data}=response
-    console.log(data);
-    setItems(data.results);
-    setImageLoading(false)
-    return 
- }
-    throw new Error("Could not fetch images")
-    } catch (error) {
-      toast.error(error.message)
-      setImageLoading(false)
-    }
-  };
-  useEffect(() => {
-    if (accessKey && session?.user?.email) {
-      fetchImages();
-    }
-    console.log(accessKey);
-  }, [searchTerm, accessKey, session?.user]);
-
-	useEffect(() => {
-		setItems(items);
-		console.log(items);
-	}, [items]);
-
 	const handleDragEnd = (event) => {
 		const { active, over } = event;
 		const oldIndex = items.findIndex((p) => p.id === active.id);
@@ -62,7 +19,7 @@ const sensors = useSensors(mouseSensor, touchSensor, keyboardSensor);
 		setItems((items) => arrayMove(items, oldIndex, newIndex));
 	};
     return (
-		<main className='w-full min-h-screen'>
+		<main className='w-full mt-[150px] min-h-screen'>
 			{imageLoading ? (
 				<section className='w-full flex justify-center'>
                 <RotatingLines strokeColor='white' strokeWidth='5' animationDuration='0.75' width='30' visible={true} />
