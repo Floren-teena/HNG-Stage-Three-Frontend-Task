@@ -7,7 +7,7 @@ const accessKey = process.env.NEXT_PUBLIC_UNSPLASH_ACCESS_KEY;
 const ImageGallery = () => {
   const [items, setItems] = useState([]);
   const [imageLoading, setImageLoading] = useState([]);
-  const searchTerm = "dogs";
+  const searchTerm = "Interior design";
   const fetchImages = async () => {
     setImageLoading(true);
     const { data } = await axios.get("https://api.unsplash.com/search/photos", {
