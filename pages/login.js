@@ -6,8 +6,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 
 const SignIn = () => {
-  const {
-    handleSubmit,
+  const {    handleSubmit,
     register,
     formState: { errors },
   } = useForm();
